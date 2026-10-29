@@ -98,7 +98,7 @@ final class TelegramNotifier {
 
     /// "<b>CubeWidget</b> - Tâche finie ✅", then the task's title (kept short) on the
     /// next line. Without a task, only the first line. Sent as HTML (for the bold).
-    private static func text(_ project: String, _ event: String, _ task: String?,
+    static func text(_ project: String, _ event: String, _ task: String?,
                              limit: Int = Constants.Telegram.taskTitleMaxLength) -> String {
         let firstLine = "<b>\(TelegramClient.escapeHTML(project))</b> - \(event)"
         let task = task?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""

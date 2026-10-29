@@ -1,0 +1,41 @@
+# On each push to main and each pull request, a Mac lent by GitHub compiles the app,
+# runs the tests, and checks that build.sh still assembles "Cube Hub.app".
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:   # "Run workflow" button on GitHub
+
+# A newer push cancels the run still going for the same branch.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Swift version
+        run: swift --version
+
+      # Builds the app and cube-hook too: the cube-hook tests run the real program.
+      - name: Build
+        run: swift build
+
+      - name: Tests
+        run: swift test
+
+      # Ad hoc signature on GitHub (no certificate there), and the app is not launched.
+      - name: Assemble the app
+        run: ./build.sh --no-run
+
+      - name: Check the app
+        run: |
+          test -x "build/Cube Hub.app/Contents/MacOS/CubeWidget"
+          plutil -lint "build/Cube Hub.app/Contents/Info.plist"
+          codesign --verify "build/Cube Hub.app"

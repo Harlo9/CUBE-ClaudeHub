@@ -834,7 +834,7 @@ final class TelegramRemote {
 
     /// Without control characters (Échap, Ctrl-C…: they could drive the terminal), with
     /// plain new lines, and without spaces around.
-    private static func cleaned(_ text: String) -> String {
+    static func cleaned(_ text: String) -> String {
         let lines = text.replacingOccurrences(of: "\r\n", with: "\n").replacingOccurrences(of: "\r", with: "\n")
         let scalars = lines.unicodeScalars.filter { $0 == "\n" || $0.properties.generalCategory != .control }
         return String(String.UnicodeScalarView(scalars)).trimmingCharacters(in: .whitespacesAndNewlines)

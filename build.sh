@@ -18,7 +18,8 @@ fi
 # Signing identity: the "Apple Development" certificate if there is one, so the app keeps
 # the same identity from one build to the next (macOS then remembers the permission to
 # drive Terminal). Otherwise an ad-hoc signature ("-"), and macOS may ask again after a build.
-SIGN_ID="$(security find-identity -v -p codesigning 2>/dev/null | grep -m1 "Apple Development" | awk '{print $2}')"
+# (`|| true`: finding none is not an error, e.g. on GitHub's Macs.)
+SIGN_ID="$(security find-identity -v -p codesigning 2>/dev/null | grep -m1 "Apple Development" | awk '{print $2}' || true)"
 SIGN_ID="${SIGN_ID:--}"
 
 # 2. Compile the app and cube-hook (the program run by the Claude Code hooks).

@@ -21,5 +21,9 @@ let package = Package(
         .executableTarget(name: "CubeHook", dependencies: ["SessionFile"], path: "Sources/CubeHook"),
         // The format of those files, shared by the hook and the app.
         .target(name: "SessionFile", path: "Sources/SessionFile"),
+        // Automated tests (`swift test`, also run by GitHub on each push).
+        .testTarget(name: "SessionFileTests", dependencies: ["SessionFile"], path: "Tests/SessionFileTests"),
+        .testTarget(name: "CubeHookTests", dependencies: ["SessionFile"], path: "Tests/CubeHookTests"),
+        .testTarget(name: "CubeWidgetTests", dependencies: ["CubeWidget", "SessionFile"], path: "Tests/CubeWidgetTests"),
     ]
 )

@@ -7,6 +7,7 @@
 **Tes sessions [Claude Code](https://claude.com/claude-code), d'un coup d'œil, sur ton Mac.**
 Un widget de cartes et un petit cube de glace animé qui te dit quand Claude bosse, quand il t'attend, et quand il a fini.
 
+[![CI](https://github.com/Harlo9/CUBE-ClaudeHub/actions/workflows/ci.yml/badge.svg)](https://github.com/Harlo9/CUBE-ClaudeHub/actions/workflows/ci.yml)
 ![macOS 14+](https://img.shields.io/badge/macOS-14%2B-000000?logo=apple&logoColor=white)
 ![Swift 5.10](https://img.shields.io/badge/Swift-5.10-F05138?logo=swift&logoColor=white)
 ![SwiftUI](https://img.shields.io/badge/SwiftUI-AppKit-0A84FF)
@@ -76,6 +77,8 @@ cd CUBE-ClaudeHub
 ```
 
 `build.sh` compile l'app dans `build/Cube Hub.app`, installe le petit programme `cube-hook` dans `~/.cube-widget/bin/`, puis lance l'app. `./build.sh --no-run` compile seulement.
+
+**Tests** : `swift build && swift test`. GitHub les lance aussi à chaque push, et vérifie que `build.sh` fabrique bien l'app.
 
 ### Brancher Claude Code
 
@@ -170,6 +173,8 @@ Sources/
     Sound/        les sons
   CubeHook/       le programme lancé par les hooks de Claude Code
   SessionFile/    le format des fichiers de session, partagé par les deux
+Tests/            les tests automatisés (cube-hook, fichiers de session, code TOTP, ordre des cartes, textes Telegram)
+.github/workflows la CI (compilation et tests sur GitHub)
 Assets/           les images d'origine du cube (réduites par Scripts/make_frames.swift)
 Resources/        images réduites, icône, Info.plist
 docs/             les images de ce README
