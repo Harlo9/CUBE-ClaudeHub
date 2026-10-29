@@ -11,7 +11,7 @@ struct GeneralSettingsPage: View {
             Section("À l'écran") {
                 Toggle(isOn: $widget.isVisible) {
                     SettingLabel("Afficher le widget",
-                                 "Les cartes de tes sessions, toujours au-dessus des autres fenêtres. Le mini cube reste dans la barre du haut.")
+                                 "Les cartes de tes sessions, toujours au-dessus des autres fenêtres. Raccourci \(Constants.Window.toggleHotKeyLabel), depuis n'importe quelle app. Le mini cube reste dans la barre du haut.")
                 }
             }
             Section("Démarrage") {

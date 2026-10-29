@@ -531,5 +531,12 @@ enum Constants {
         /// Widget sizes offered in the right-click menu (1 = 100 %).
         /// Every size and font of the widget is multiplied by the chosen value.
         static let scaleChoices: [Double] = [1.0, 0.9, 0.8, 0.7, 0.6]
+        /// Keyboard shortcut that shows or hides the widget, from any app: ⌃⌥W.
+        /// Key code of the key (W = 13, see `kVK_ANSI_…` in Carbon's Events.h) and its
+        /// modifiers (Control = 0x1000, Option = 0x0800, Command = 0x0100, Shift = 0x0200).
+        static let toggleHotKeyCode: UInt32 = 13
+        static let toggleHotKeyModifiers: UInt32 = 0x1000 | 0x0800
+        /// The same shortcut as shown in the menus and in Réglages (change it with the two above).
+        static let toggleHotKeyLabel = "⌃⌥W"
     }
 }

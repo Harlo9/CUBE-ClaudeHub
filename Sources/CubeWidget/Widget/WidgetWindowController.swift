@@ -17,6 +17,7 @@ final class WidgetWindowController {
     private let cube: CubeAnimator
     private let hubController: HubWindowController
     private var menuBar: MenuBarController?
+    private var hotKey: WidgetHotKey?
     private var settingsWindow: SettingsWindowController!
     private let telegramNotifier = TelegramNotifier()
     private let telegramRemote: TelegramRemote
@@ -32,7 +33,7 @@ final class WidgetWindowController {
         let initial = store.loadNow()
         board.applyRealSessions(initial)
         cube = CubeAnimator(mood: board.cubeMood)
-        hubController = HubWindowController(board: board)
+        hubController = HubWindowController(board: board, widget: settings)
         telegramRemote = TelegramRemote(hub: hubController.hub)
         settingsWindow = SettingsWindowController(
             widget: settings,
@@ -120,6 +121,9 @@ final class WidgetWindowController {
             },
             onOpenHub: { [weak hubController] in hubController?.show() },
             onOpenSettings: { [weak settingsWindow] page in settingsWindow?.show(page) })
+
+        // ⌃⌥W, from any app: same setting as "Afficher le widget".
+        hotKey = WidgetHotKey { [weak self] in self?.settings.isVisible.toggle() }
 
         // "Afficher le widget" (menu bar icon or Réglages): shows or hides the panel.
         settings.$isVisible

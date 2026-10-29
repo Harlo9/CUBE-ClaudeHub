@@ -12,13 +12,16 @@ import SwiftUI
 final class HubWindowController: NSObject, NSWindowDelegate {
     let hub = HubModel()
     private let board: SessionBoard
+    /// The widget's preferences: the toolbar button shows or hides the widget.
+    private let widget: WidgetSettings
     private var window: NSWindow?
     private var observers: Set<AnyCancellable> = []
     /// Opens the Réglages window (the gear, ⌘,).
     var onOpenSettings: (() -> Void)?
 
-    init(board: SessionBoard) {
+    init(board: SessionBoard, widget: WidgetSettings) {
         self.board = board
+        self.widget = widget
         super.init()
         // Choosing a session in the list brings its card to the front of the widget
         // (not the selection restored at launch).
@@ -164,7 +167,7 @@ final class HubWindowController: NSObject, NSWindowDelegate {
         window.collectionBehavior = [.managed, .fullScreenPrimary]
         window.delegate = self
         window.contentView = NSHostingView(rootView: HubView(
-            hub: hub, board: board,
+            hub: hub, board: board, widget: widget,
             onNewProject: { [weak self] in self?.newProject() },
             onBringIntoHub: { [weak self] session in self?.bringIntoHub(session) },
             onOpenSettings: { [weak self] in self?.openSettings() }))

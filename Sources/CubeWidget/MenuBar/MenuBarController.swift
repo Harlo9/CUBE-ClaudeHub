@@ -62,7 +62,8 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         let hub = NSMenuItem(title: "Ouvrir le Cube Hub", action: #selector(openHub), keyEquivalent: "")
         hub.target = self
         menu.addItem(hub)
-        let widget = NSMenuItem(title: "Afficher le widget", action: #selector(toggleWidget), keyEquivalent: "")
+        let widget = NSMenuItem(title: "Afficher le widget", action: #selector(toggleWidget), keyEquivalent: "w")
+        widget.keyEquivalentModifierMask = [.control, .option]   // only shown: the global ⌃⌥W does the work
         widget.target = self
         widget.state = self.widget.isVisible ? .on : .off
         menu.addItem(widget)

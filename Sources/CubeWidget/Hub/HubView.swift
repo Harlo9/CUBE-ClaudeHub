@@ -6,6 +6,7 @@ import SwiftUI
 struct HubView: View {
     @ObservedObject var hub: HubModel
     @ObservedObject var board: SessionBoard
+    @ObservedObject var widget: WidgetSettings
     let onNewProject: () -> Void
     let onBringIntoHub: (Session) -> Void
     let onOpenSettings: () -> Void
@@ -26,6 +27,15 @@ struct HubView: View {
             detail
                 .navigationTitle("Cube Hub")
                 .toolbar {
+                    // Same setting as "Afficher le widget" in the menu bar and in Réglages.
+                    ToolbarItem(placement: .primaryAction) {
+                        Button { widget.isVisible.toggle() } label: {
+                            Label(widget.isVisible ? "Masquer le widget" : "Afficher le widget",
+                                  systemImage: widget.isVisible ? "cube.fill" : "cube")
+                        }
+                        .help((widget.isVisible ? "Masquer le widget" : "Afficher le widget")
+                              + " (\(Constants.Window.toggleHotKeyLabel))")
+                    }
                     ToolbarItem(placement: .primaryAction) {
                         Button(action: onOpenSettings) {
                             Label("Réglages", systemImage: "gearshape")
