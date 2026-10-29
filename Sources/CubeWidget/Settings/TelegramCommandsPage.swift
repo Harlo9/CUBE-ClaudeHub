@@ -67,7 +67,7 @@ struct TelegramCommandsPage: View {
         } header: {
             Text("Projets autorisés")
         } footer: {
-            Text("Seuls ces projets acceptent tes réponses depuis Telegram. Tous sont refusés au départ, nouveaux projets compris. Aussi dans le Claude Hub : clic droit sur un projet → Commandes Telegram.")
+            Text("Seuls ces projets acceptent tes réponses depuis Telegram. Tous sont refusés au départ, nouveaux projets compris. Aussi dans le Cube Hub : clic droit sur un projet → Commandes Telegram.")
                 .font(.caption).foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -136,7 +136,7 @@ struct TelegramCommandsPage: View {
                     }
                 } label: {
                     SettingLabel("2. Le code à 6 chiffres affiché",
-                                 lock.isSetUp ? "Valider remplace l'ancien code : supprime l'ancien « CubeWidget » de ton app." : nil)
+                                 lock.isSetUp ? "Valider remplace l'ancien code : supprime l'ancien « Cube Hub » (ou « CubeWidget ») de ton app." : nil)
                 }
                 if let codeError { SettingStatus(ok: false, codeError) }
             }
@@ -154,7 +154,7 @@ struct TelegramCommandsPage: View {
 
     private func confirm(_ secret: Data) {
         guard lock.setUp(secret: secret, code: code) else {
-            codeError = "Code faux : vérifie que c'est bien celui de « CubeWidget », puis réessaie."
+            codeError = "Code faux : vérifie que c'est bien celui de « Cube Hub », puis réessaie."
             return
         }
         self.secret = nil   // no longer shown

@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// The "Réglages" window (gear of the Claude Hub, ⌘, or "Réglages…" in the menus): every
+/// The "Réglages" window (gear of the Cube Hub, ⌘, or "Réglages…" in the menus): every
 /// setting of the app in one place, sorted into pages listed on the left, like the Mac's
 /// System Settings.
 ///
@@ -75,7 +75,7 @@ final class SettingsNavigation: ObservableObject {
     }
 }
 
-/// The app's own windows (Claude Hub, Réglages…) share the Dock icon: the app goes back
+/// The app's own windows (Cube Hub, Réglages…) share the Dock icon: the app goes back
 /// to having none only once the last of them is closed.
 enum AppWindows {
     @MainActor

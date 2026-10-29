@@ -1,7 +1,8 @@
 import AppKit
+import Combine
 import SwiftUI
 
-/// The Claude Hub window.
+/// The Cube Hub window.
 ///
 /// The app normally has no Dock icon (it is an "accessory"). While the Hub is open it
 /// becomes a normal app: Dock icon, ⌘Tab, and a menu bar with Copy / Paste, which the
@@ -12,11 +13,39 @@ final class HubWindowController: NSObject, NSWindowDelegate {
     let hub = HubModel()
     private let board: SessionBoard
     private var window: NSWindow?
+    private var observers: Set<AnyCancellable> = []
     /// Opens the Réglages window (the gear, ⌘,).
     var onOpenSettings: (() -> Void)?
 
     init(board: SessionBoard) {
         self.board = board
+        super.init()
+        // Choosing a session in the list brings its card to the front of the widget
+        // (not the selection restored at launch).
+        hub.$selection
+            .dropFirst()
+            .removeDuplicates()
+            .sink { [weak self] selection in
+                // After the list's own update, which is changing the selection right now.
+                DispatchQueue.main.async { self?.bringToFront(selection) }
+            }
+            .store(in: &observers)
+    }
+
+    private func bringToFront(_ selection: HubModel.Selection?) {
+        let id: Session.ID?
+        switch selection {
+        case .session(let sessionID):
+            id = sessionID
+        case .project(let projectID):
+            id = board.session(onTTY: hub.projects.first { $0.id == projectID }?.tty)?.id
+        case nil:
+            id = nil
+        }
+        guard let id else { return }
+        withAnimation(.smooth(duration: Constants.BackCard.swapAnimationDuration)) {
+            board.activate(id)
+        }
     }
 
     /// Shows the Hub, on a given project if any.
@@ -128,7 +157,7 @@ final class HubWindowController: NSObject, NSWindowDelegate {
             contentRect: NSRect(origin: .zero, size: Constants.Hub.windowSize),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false)
-        window.title = "Claude Hub"
+        window.title = "Cube Hub"
         window.appearance = NSAppearance(named: .darkAqua)   // black design, even in light mode
         window.isReleasedWhenClosed = false
         // A normal app window: on one desktop, and it can go full screen itself.
@@ -140,7 +169,7 @@ final class HubWindowController: NSObject, NSWindowDelegate {
             onBringIntoHub: { [weak self] session in self?.bringIntoHub(session) },
             onOpenSettings: { [weak self] in self?.openSettings() }))
         window.center()
-        window.setFrameAutosaveName("ClaudeHub")   // remembers its size and position
+        window.setFrameAutosaveName("ClaudeHub")   // remembers its size and position (old name kept, so the saved frame stays)
         self.window = window
         return window
     }
@@ -166,12 +195,12 @@ enum HubMenu {
     static func make(target: HubWindowController) -> NSMenu {
         let main = NSMenu()
 
-        let app = NSMenu(title: "CubeWidget")
+        let app = NSMenu(title: "Cube Hub")
         app.addItem(item("Réglages…", #selector(HubWindowController.openSettings), ",", target))
         app.addItem(.separator())
-        app.addItem(withTitle: "Masquer CubeWidget", action: #selector(NSApplication.hide(_:)), keyEquivalent: "h")
+        app.addItem(withTitle: "Masquer Cube Hub", action: #selector(NSApplication.hide(_:)), keyEquivalent: "h")
         app.addItem(.separator())
-        app.addItem(withTitle: "Quitter CubeWidget", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        app.addItem(withTitle: "Quitter Cube Hub", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         add(app, to: main)
 
         let file = NSMenu(title: "Projet")

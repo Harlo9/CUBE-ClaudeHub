@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>CubeWidget</string>
+	<string>Cube Hub</string>
 	<key>CFBundleDisplayName</key>
-	<string>CubeWidget</string>
+	<string>Cube Hub</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.cubewidget.app</string>
 	<key>CFBundleExecutable</key>
@@ -25,6 +25,6 @@
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSAppleEventsUsageDescription</key>
-	<string>CubeWidget pilote Terminal pour afficher l'onglet de la session Claude Code sur laquelle tu cliques.</string>
+	<string>Cube Hub pilote Terminal pour afficher l'onglet de la session Claude Code sur laquelle tu cliques.</string>
 </dict>
 </plist>

@@ -3,7 +3,7 @@ import Foundation
 import SessionFile
 
 /// "Commandes depuis Telegram": a reply to one of the bot's messages is typed into the
-/// Claude session that message was about, as if you typed it in the Claude Hub.
+/// Claude session that message was about, as if you typed it in the Cube Hub.
 ///
 /// Nothing listens on the Mac: the app asks Telegram for new messages ("long polling"),
 /// only while the switch is on and Telegram is set up. What is accepted:
@@ -12,7 +12,7 @@ import SessionFile
 /// - only while unlocked: `/unlock` with the six-digit code of your code app, for
 ///   `unlockDuration` (`RemoteLock`); `/lock` locks again;
 /// - only replies to a message the bot sent during this run of the app;
-/// - only sessions running in the Claude Hub, with Claude in the foreground of their
+/// - only sessions running in the Cube Hub, with Claude in the foreground of their
 ///   terminal (not the shell, not another program), and not waiting on a question or a
 ///   permission;
 /// - no shell command (a leading "!"), no Claude command ("/"), no memory note ("#"),
@@ -483,7 +483,7 @@ final class TelegramRemote {
     }
 
     /// The session's terminal, if a button's key can go there now: project allowed, in
-    /// the Claude Hub, with Claude in the foreground.
+    /// the Cube Hub, with Claude in the foreground.
     private func answerableProject(of file: SessionFile) throws -> HubProject {
         let folder = URL(fileURLWithPath: file.cwd)
         let name = folder.lastPathComponent
@@ -491,7 +491,7 @@ final class TelegramRemote {
             throw Refusal(reason: "« \(name) » n'accepte pas les commandes (à autoriser sur le Mac : Réglages → Telegram – Commandes).")
         }
         guard let project = hub.project(forTTY: file.tty), project.isRunning else {
-            throw Refusal(reason: "« \(name) » ne tourne pas dans le Claude Hub.", isFinal: true)
+            throw Refusal(reason: "« \(name) » ne tourne pas dans le Cube Hub.", isFinal: true)
         }
         guard let pid = file.pid, Self.isInForeground(pid, of: project) else {
             throw Refusal(reason: "Claude n'est pas au premier plan dans le terminal de « \(name) ».")
@@ -774,7 +774,7 @@ final class TelegramRemote {
             throw Refusal(reason: "« \(name) » n'accepte pas les commandes (à autoriser sur le Mac : Réglages → Telegram – Commandes).")
         }
         guard let project = hub.project(forTTY: file.tty), project.isRunning else {
-            throw Refusal(reason: "« \(name) » ne tourne pas dans le Claude Hub.")
+            throw Refusal(reason: "« \(name) » ne tourne pas dans le Cube Hub.")
         }
         guard file.status != .waiting else {
             throw Refusal(reason: file.pendingPermission != nil

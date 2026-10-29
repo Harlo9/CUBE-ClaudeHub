@@ -141,7 +141,7 @@ struct TelegramConnectionPage: View {
         isSendingTest = true
         testResult = nil
         Task {
-            let ok = await settings.send("🧊 CubeWidget : les notifications Telegram fonctionnent !") != nil
+            let ok = await settings.send("🧊 Cube Hub : les notifications Telegram fonctionnent !") != nil
             testResult = ok ? (true, "Message envoyé") : (false, settings.lastError ?? "échec")
             isSendingTest = false
         }

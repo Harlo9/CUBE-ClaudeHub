@@ -1,7 +1,7 @@
 import AppKit
 import SwiftTerm
 
-/// One project of the Claude Hub: a folder and its own terminal, where Claude runs.
+/// One project of the Cube Hub: a folder and its own terminal, where Claude runs.
 ///
 /// The terminal stays alive when another project is shown (only its view is swapped),
 /// so Claude keeps working in the background.

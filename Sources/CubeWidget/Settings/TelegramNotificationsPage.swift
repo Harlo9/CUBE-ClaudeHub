@@ -44,7 +44,7 @@ struct TelegramNotificationsPage: View {
             } header: {
                 Text("Par projet")
             } footer: {
-                Text("Même réglage que la cloche sur les cartes du widget et du Claude Hub.")
+                Text("Même réglage que la cloche sur les cartes du widget et du Cube Hub.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }

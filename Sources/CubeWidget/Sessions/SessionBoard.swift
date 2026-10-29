@@ -35,6 +35,11 @@ final class SessionBoard: ObservableObject {
     private var realSessions: [SessionStore.Snapshot] = []
     /// When each session's last completed task was seen, to start the green state once.
     private var seenCompletions: [Session.ID: Date] = [:]
+    /// When each session's last message from you was seen, to bring it to the front once.
+    private var seenPrompts: [Session.ID: Date] = [:]
+    /// The session your message just brought to the front: it starts like the active
+    /// project you answer (entrance and "bosse" sound).
+    private var promptedID: Session.ID?
     private var hasLoadedRealSessions = false
     private var soundsMuted = false
 
@@ -94,9 +99,10 @@ final class SessionBoard: ObservableObject {
 
     /// Shows the sessions read from the hook files.
     ///
-    /// The active session (front card) stays the same until you click another card or it
-    /// ends; then the next card comes to the front. Below it: first the sessions waiting
-    /// for your answer, then the others, the most recent change first.
+    /// The active session (front card) stays the same until you send a message to another
+    /// session, click another card, or it ends; then the next card comes to the front.
+    /// Below it: first the sessions waiting for your answer, then the others, the most
+    /// recent change first.
     func applyRealSessions(_ snapshots: [SessionStore.Snapshot]) {
         realSessions = snapshots
         guard !isDemo else { return }
@@ -110,6 +116,17 @@ final class SessionBoard: ObservableObject {
             // The active session ended: the next card that still exists comes to the front.
             activeID = sessions.dropFirst().first { ids.contains($0.id) }?.id
         }
+        // You just sent a message to a session: it comes to the front (the latest one if
+        // several). At launch, messages already sent change nothing.
+        var prompted: (id: Session.ID, at: Date)?
+        for snapshot in snapshots {
+            guard let at = snapshot.file.lastPromptAt else { continue }
+            let id = snapshot.file.sessionID
+            let isNew = seenPrompts[id] != at
+            seenPrompts[id] = at
+            if isNew, !isFirstLoad, at > (prompted?.at ?? .distantPast) { prompted = (id, at) }
+        }
+        if let prompted { activeID = prompted.id }
         if activeID == nil {
             // No active session yet: the one with the latest activity.
             activeID = snapshots.max { $0.file.updatedAt < $1.file.updatedAt }?.file.sessionID
@@ -120,10 +137,12 @@ final class SessionBoard: ObservableObject {
         if ordered != sessions {
             // At launch, sessions that were already there make no sound.
             soundsMuted = isFirstLoad
+            promptedID = prompted?.id
             withAnimation(.smooth(duration: Constants.BackCard.swapAnimationDuration)) {
                 sessions = ordered
             }
             soundsMuted = false
+            promptedID = nil
         }
 
         // A task just completed in the active session: green state.
@@ -211,7 +230,8 @@ final class SessionBoard: ObservableObject {
     private func playWorkingSound(previous: [Session]) {
         guard let active, active.status == .working else { return }
         let before = previous.first
-        if before == nil || (before?.id == active.id && before?.status != .working) {
+        if before == nil || (before?.id == active.id && before?.status != .working)
+            || (before?.id != active.id && active.id == promptedID) {
             playActiveSound(.working)
         }
     }

@@ -33,7 +33,7 @@ final class TelegramSettings: ObservableObject {
         didSet { defaults.set(isOnForNewProjects, forKey: Keys.onForNewProjects) }
     }
     /// "Commandes depuis Telegram": your replies to the bot's messages are typed into the
-    /// matching Claude Hub session. Off until you turn it on.
+    /// matching Cube Hub session. Off until you turn it on.
     @Published var remoteEnabled: Bool {
         didSet { defaults.set(remoteEnabled, forKey: Keys.remoteEnabled) }
     }

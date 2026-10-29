@@ -27,7 +27,7 @@ Un widget de cartes et un petit cube de glace animé qui te dit quand Claude bos
 |---|---|
 | 🧊 **Le cube** | Une mascotte animée qui montre l'état du projet actif : il regarde autour de lui, cligne, sautille, s'endort… |
 | 🃏 **Le widget** | Le projet actif en grand (tâche en cours, statut, durée, tokens), les autres sessions empilées en dessous. Toujours au-dessus des fenêtres, sur tous les bureaux. |
-| 🗂️ **Le Claude Hub** | Une fenêtre qui réunit toutes tes sessions, rangées par thèmes, avec un vrai terminal par projet. |
+| 🗂️ **Le Cube Hub** | Une fenêtre qui réunit toutes tes sessions, rangées par thèmes, avec un vrai terminal par projet. |
 | 📱 **Telegram** | Facultatif : des notifications sur ton téléphone, et tu peux répondre à Claude depuis Telegram. |
 | 🔔 **Barre des menus** | Un mini cube animé et la liste de toutes tes sessions. |
 
@@ -46,10 +46,10 @@ Un widget de cartes et un petit cube de glace animé qui te dit quand Claude bos
 
 Chaque changement d'état a son petit son (réglable ou coupé dans les Réglages).
 
-## 🗂️ Le Claude Hub
+## 🗂️ Le Cube Hub
 
 <div align="center">
-<img src="docs/hub.png" width="760" alt="La fenêtre Claude Hub : la liste des sessions à gauche avec leur cube, une session au centre">
+<img src="docs/hub.png" width="760" alt="La fenêtre Cube Hub : la liste des sessions à gauche avec leur cube, une session au centre">
 </div>
 
 - Toutes tes sessions dans une liste, chacune avec son cube, son statut et sa tâche en cours.
@@ -75,7 +75,7 @@ cd CUBE-ClaudeHub
 ./build.sh
 ```
 
-`build.sh` compile l'app dans `build/CubeWidget.app`, installe le petit programme `cube-hook` dans `~/.cube-widget/bin/`, puis lance l'app. `./build.sh --no-run` compile seulement.
+`build.sh` compile l'app dans `build/Cube Hub.app`, installe le petit programme `cube-hook` dans `~/.cube-widget/bin/`, puis lance l'app. `./build.sh --no-run` compile seulement.
 
 ### Brancher Claude Code
 
@@ -118,8 +118,8 @@ Les sessions déjà ouvertes apparaissent à leur prochain événement.
 
 <br>
 
-- **« CubeWidget souhaite contrôler Terminal »** (bouton « Afficher dans Terminal » du Hub) : OK. Réglable dans Réglages Système → Confidentialité et sécurité → Automatisation.
-- **« CubeWidget souhaite vous envoyer des notifications »** (seulement si tu allumes les commandes Telegram) : Autoriser.
+- **« Cube Hub souhaite contrôler Terminal »** (bouton « Afficher dans Terminal » du Hub) : OK. Réglable dans Réglages Système → Confidentialité et sécurité → Automatisation.
+- **« Cube Hub souhaite vous envoyer des notifications »** (seulement si tu allumes les commandes Telegram) : Autoriser.
 - La première fois, macOS peut demander si `codesign` peut utiliser la clé du trousseau : « Toujours autoriser ». `build.sh` signe avec ton certificat « Apple Development » s'il existe, sinon avec une signature locale.
 
 </details>
@@ -161,7 +161,7 @@ Sources/
     App/          démarrage, Constants.swift (toutes les tailles, couleurs et durées)
     Widget/       les cartes et le halo
     Mascot/       le cube animé
-    Hub/          la fenêtre Claude Hub et ses thèmes
+    Hub/          la fenêtre Cube Hub et ses thèmes
     Terminal/     le lien avec l'app Terminal (AppleScript)
     MenuBar/      le mini cube de la barre des menus
     Telegram/     notifications et commandes

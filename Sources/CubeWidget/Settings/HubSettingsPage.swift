@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// "Claude Hub": the themes of the Hub's list (name, color, order), and a new one.
+/// "Cube Hub": the themes of the Hub's list (name, color, order), and a new one.
 /// The same themes as in the Hub: a change here shows there right away, and the other way round.
 struct HubSettingsPage: View {
     @ObservedObject var themes: HubThemes
@@ -28,7 +28,7 @@ struct HubSettingsPage: View {
             } header: {
                 Text("Thèmes")
             } footer: {
-                Text("Pour ranger une session dans un thème : glisse sa carte dans le Claude Hub, ou clic droit sur sa carte → Thème ▸. Supprimer un thème ne ferme aucune session : elles vont dans « Sans thème ».")
+                Text("Pour ranger une session dans un thème : glisse sa carte dans le Cube Hub, ou clic droit sur sa carte → Thème ▸. Supprimer un thème ne ferme aucune session : elles vont dans « Sans thème ».")
                     .font(.caption).foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }

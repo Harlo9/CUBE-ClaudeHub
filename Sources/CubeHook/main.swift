@@ -75,6 +75,7 @@ case "Notification":
 default:
     break
 }
+if eventName == "UserPromptSubmit" { session.lastPromptAt = now }
 
 // MARK: - Tasks
 

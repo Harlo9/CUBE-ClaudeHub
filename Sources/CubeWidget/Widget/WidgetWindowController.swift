@@ -278,7 +278,7 @@ struct WidgetRootView: View {
     let cube: CubeAnimator
     let onOpenSession: (Session?) -> Void
     let onOpenHub: () -> Void
-    /// Asks for a folder and starts Claude there, in the Claude Hub.
+    /// Asks for a folder and starts Claude there, in the Cube Hub.
     let onNewSession: () -> Void
     let onOpenSettings: () -> Void
     /// The card under the mouse: a right click on it offers its Telegram setting.
@@ -299,7 +299,7 @@ struct WidgetRootView: View {
                 }
                 SessionsMenuSection(board: board, onChoose: choose)
                 Button("Nouvelle session…") { onNewSession() }
-                Button("Ouvrir le Claude Hub") { onOpenHub() }
+                Button("Ouvrir le Cube Hub") { onOpenHub() }
                 Divider()
                 Button(settings.isCollapsed ? "Déplier" : "Replier") { toggleCollapsed() }
                 Picker("Taille du widget", selection: $settings.scale) {
@@ -328,7 +328,7 @@ struct WidgetRootView: View {
                     }
                 }
                 Divider()
-                Button("Quitter CubeWidget") { NSApp.terminate(nil) }
+                Button("Quitter Cube Hub") { NSApp.terminate(nil) }
             }
     }
 

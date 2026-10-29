@@ -12,7 +12,7 @@ enum SettingsPage: String, CaseIterable, Identifiable {
         case .general: "Général"
         case .widget: "Widget"
         case .sounds: "Sons"
-        case .hub: "Claude Hub"
+        case .hub: "Cube Hub"
         case .telegramConnection: "Connexion"
         case .telegramNotifications: "Notifications"
         case .telegramCommands: "Commandes"

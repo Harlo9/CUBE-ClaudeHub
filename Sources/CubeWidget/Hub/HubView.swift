@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The Claude Hub window: on the left, every Claude session as a small card with its ice
+/// The Cube Hub window: on the left, every Claude session as a small card with its ice
 /// cube (the Hub's projects, then the sessions running in Terminal, like the widget's
 /// cards); on the right, the selected session: its cube and details above its terminal.
 struct HubView: View {
@@ -24,7 +24,7 @@ struct HubView: View {
                 }
         } detail: {
             detail
-                .navigationTitle("Claude Hub")
+                .navigationTitle("Cube Hub")
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
                         Button(action: onOpenSettings) {
@@ -199,6 +199,7 @@ struct HubSidebar: View {
             }
             .coordinateSpace(name: Self.space)
             .onPreferenceChange(RowFrames.self) { rowFrames = $0 }
+            .background(OverlayScroller())
         }
         // Always visible at the bottom of the list, even when it scrolls.
         .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -812,6 +813,40 @@ private struct NewSessionCard: View {
 }
 
 /// The measured frames of the list's cards, by row ID.
+/// Gives the enclosing scroll view the thin "overlay" scroll bar (no track, shown only while
+/// scrolling), even when System Settings say "Show scroll bars: Always", whose wide bar
+/// with its track is too heavy for the list.
+private struct OverlayScroller: NSViewRepresentable {
+    func makeNSView(context: Context) -> OverlayScrollerView { OverlayScrollerView() }
+    func updateNSView(_ view: OverlayScrollerView, context: Context) { view.apply() }
+}
+
+private final class OverlayScrollerView: NSView {
+    private var observer: NSObjectProtocol?
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        apply()
+        guard observer == nil else { return }
+        // The scroll view goes back to the system's style when that setting changes
+        // (a mouse plugged in, for instance): set the overlay style again right after.
+        observer = NotificationCenter.default.addObserver(
+            forName: NSScroller.preferredScrollerStyleDidChangeNotification, object: nil, queue: .main
+        ) { [weak self] _ in
+            DispatchQueue.main.async { self?.apply() }
+        }
+    }
+
+    func apply() {
+        guard let scrollView = enclosingScrollView, scrollView.scrollerStyle != .overlay else { return }
+        scrollView.scrollerStyle = .overlay
+    }
+
+    deinit {
+        if let observer { NotificationCenter.default.removeObserver(observer) }
+    }
+}
+
 private struct RowFrames: PreferenceKey {
     static let defaultValue: [String: CGRect] = [:]
     static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {

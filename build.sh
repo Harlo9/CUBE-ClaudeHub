@@ -1,11 +1,11 @@
 #!/bin/bash
-# Builds CubeWidget.app into build/ and launches it.
+# Builds "Cube Hub.app" into build/ and launches it.
 # Usage: ./build.sh            build + (re)launch
 #        ./build.sh --no-run   build only
 set -euo pipefail
 cd "$(dirname "$0")"
 
-APP="build/CubeWidget.app"
+APP="build/Cube Hub.app"   # the folder name is the name shown by the Dock and Finder
 STAMP="Resources/Frames/.stamp"
 
 # 1. Reduced cube frames: regenerated only when an original (or the script) changed.
@@ -37,7 +37,7 @@ mv -f "$HOOK_DIR/cube-hook.new" "$HOOK_DIR/cube-hook"
 
 # 3. Assemble the .app bundle (a .app is just a folder with a fixed layout).
 pkill -x CubeWidget 2>/dev/null || true
-rm -rf "$APP"
+rm -rf "$APP" build/CubeWidget.app   # also the app's former name
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN_DIR/CubeWidget" "$APP/Contents/MacOS/"
 cp Resources/Info.plist "$APP/Contents/"

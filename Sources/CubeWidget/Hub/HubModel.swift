@@ -1,6 +1,6 @@
 import AppKit
 
-/// The projects of the Claude Hub, and the one shown.
+/// The projects of the Cube Hub, and the one shown.
 ///
 /// The list of folders is remembered: when the app starts again, the projects come
 /// back and resume their last conversation (`claude --continue`) when first shown.

@@ -225,7 +225,7 @@ enum Constants {
         static let sourceCrop = CGRect(x: 236, y: 160, width: 900, height: 870)
     }
 
-    // MARK: - Claude Hub
+    // MARK: - Cube Hub
 
     /// The window gathering the projects, each with its terminal running Claude.
     enum Hub {
@@ -460,7 +460,7 @@ enum Constants {
 
     // MARK: - Settings
 
-    /// The "Réglages" window (gear of the Claude Hub, ⌘,).
+    /// The "Réglages" window (gear of the Cube Hub, ⌘,).
     enum Settings {
         /// Size when first opened (then remembered), and smallest size, in points.
         static let windowSize = CGSize(width: 600, height: 430)
@@ -478,7 +478,7 @@ enum Constants {
         static let telegramCommandsColor = Color(hex: 0xBF5AF2)
         static let soundsColor = Color(hex: 0xFF2D55)
         static let hubColor = Color(hex: 0x30B0C7)
-        /// Sons: width of each volume slider. Claude Hub: the color dot before a theme's name.
+        /// Sons: width of each volume slider. Cube Hub: the color dot before a theme's name.
         static let volumeSliderWidth: CGFloat = 130
         static let themeDotSize: CGFloat = 9
     }

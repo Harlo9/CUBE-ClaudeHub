@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The ice cube of a session in the Claude Hub. Simpler than the widget's (there can be
+/// The ice cube of a session in the Cube Hub. Simpler than the widget's (there can be
 /// many of them): each pose is computed from the clock, with the same images and colors.
 /// - bosse: blue, looks left and right and blinks (the `Travail` loop)
 /// - attend: orange, a small jump every few seconds

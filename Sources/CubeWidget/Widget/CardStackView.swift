@@ -106,7 +106,7 @@ struct CardStackView: View {
         bringToFront(back)
     }
 
-    /// Double click: opens the card's session in the Claude Hub, like opening an app.
+    /// Double click: opens the card's session in the Cube Hub, like opening an app.
     /// A card below first comes to the front.
     private func handleDoubleClick(at location: CGPoint) {
         let session = backCard(at: location) ?? board.active

@@ -58,14 +58,14 @@ enum RemoteLog {
     // MARK: - Notifications on the Mac
 
     /// Asks macOS once whether the app may show notifications (the first time, a window
-    /// "CubeWidget souhaite vous envoyer des notifications" appears: answer Autoriser).
+    /// "Cube Hub souhaite vous envoyer des notifications" appears: answer Autoriser).
     static func requestNotifications() {
         let center = UNUserNotificationCenter.current()
         center.delegate = NotificationPresenter.shared
         center.requestAuthorization(options: [.alert]) { _, _ in }
     }
 
-    /// A notification, shown even while the Claude Hub is in front.
+    /// A notification, shown even while the Cube Hub is in front.
     static func notify(_ title: String, _ body: String) {
         let content = UNMutableNotificationContent()
         content.title = title

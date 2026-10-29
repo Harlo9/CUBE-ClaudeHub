@@ -123,6 +123,9 @@ public struct SessionFile: Codable, Equatable, Sendable {
     public var pendingPermission: Permission?
     /// Missing in files written before it existed (read as nil).
     public var pendingQuestion: Question?
+    /// Last message you sent (`UserPromptSubmit`): its card comes to the front of the
+    /// widget. Missing in files written before it existed (read as nil).
+    public var lastPromptAt: Date?
 
     public init(sessionID: String, cwd: String, transcriptPath: String?, status: Status,
                 startedAt: Date, now: Date) {

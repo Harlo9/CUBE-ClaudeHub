@@ -29,7 +29,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         self.onOpenHub = onOpenHub
         miniCube = MenuBarCube(button: item.button)
         super.init()
-        item.button?.toolTip = "CubeWidget"
+        item.button?.toolTip = "Cube Hub"
         // The mini cube shows what the widget's cube shows, at the same moment.
         moodObserver = cube.$shownMood
             .removeDuplicates()
@@ -59,7 +59,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
             }
         }
         menu.addItem(.separator())
-        let hub = NSMenuItem(title: "Ouvrir le Claude Hub", action: #selector(openHub), keyEquivalent: "")
+        let hub = NSMenuItem(title: "Ouvrir le Cube Hub", action: #selector(openHub), keyEquivalent: "")
         hub.target = self
         menu.addItem(hub)
         let widget = NSMenuItem(title: "Afficher le widget", action: #selector(toggleWidget), keyEquivalent: "")
@@ -77,7 +77,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         menu.addItem(.separator())
         menu.addItem(telegramItem())
         menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "Quitter CubeWidget", action: #selector(NSApplication.terminate(_:)),
+        menu.addItem(NSMenuItem(title: "Quitter Cube Hub", action: #selector(NSApplication.terminate(_:)),
                                 keyEquivalent: "q"))
     }
 

@@ -16,8 +16,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         guard widget?.hasRunningHubProjects == true else { return .terminateNow }
         let alert = NSAlert()
-        alert.messageText = "Quitter CubeWidget ?"
-        alert.informativeText = "Les sessions Claude ouvertes dans le Claude Hub vont s'arrêter. Tu pourras reprendre leurs conversations en rouvrant l'app."
+        alert.messageText = "Quitter Cube Hub ?"
+        alert.informativeText = "Les sessions Claude ouvertes dans le Cube Hub vont s'arrêter. Tu pourras reprendre leurs conversations en rouvrant l'app."
         alert.addButton(withTitle: "Quitter")
         alert.addButton(withTitle: "Annuler")
         NSApp.activate(ignoringOtherApps: true)

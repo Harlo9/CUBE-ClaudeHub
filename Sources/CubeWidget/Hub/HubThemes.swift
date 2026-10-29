@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A theme of the Claude Hub's list ("Freelance", "Projet perso"…): a named, colored
+/// A theme of the Cube Hub's list ("Freelance", "Projet perso"…): a named, colored
 /// section that groups sessions.
 struct HubTheme: Codable, Identifiable, Equatable {
     let id: UUID

@@ -76,7 +76,7 @@ enum TOTP {
 
     /// What the QR code contains: the address code apps understand ("otpauth://…").
     static func setupURL(secret: Data) -> String {
-        "otpauth://totp/CubeWidget:Telegram?secret=\(base32(secret))&issuer=CubeWidget"
+        "otpauth://totp/Cube%20Hub:Telegram?secret=\(base32(secret))&issuer=Cube%20Hub"
             + "&algorithm=SHA1&digits=\(digits)&period=\(Int(period))"
     }
 }
