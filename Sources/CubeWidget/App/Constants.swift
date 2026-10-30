@@ -316,6 +316,15 @@ enum Constants {
         static let headerCubeSize: CGFloat = 50
         static let headerNameFontSize: CGFloat = 16
         static let headerDetailFontSize: CGFloat = 12
+        /// The ">_" icon at the right of the band: opens a Terminal window in the project's
+        /// folder. Gray, lit on hover (like the bells).
+        static let openTerminalIconSize: CGFloat = 18
+        static let openTerminalIconColor = Color(hex: 0x6E6E73)
+        static let openTerminalIconHoverColor = Color.white
+        /// Space between that Terminal window and the Hub window (0 = right against it).
+        /// The window keeps Terminal's usual size (80 x 24 by default, set in Terminal's
+        /// settings → Profiles → Window).
+        static let openTerminalGap: CGFloat = 0
 
         // The big cube of a session running in Terminal, and of the empty page.
         static let bigCubeSize: CGFloat = 130

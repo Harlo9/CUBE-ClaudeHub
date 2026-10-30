@@ -37,7 +37,14 @@ codesign --force --sign "$SIGN_ID" "$HOOK_DIR/cube-hook.new" >/dev/null 2>&1
 mv -f "$HOOK_DIR/cube-hook.new" "$HOOK_DIR/cube-hook"
 
 # 3. Assemble the .app bundle (a .app is just a folder with a fixed layout).
-pkill -x CubeWidget 2>/dev/null || true
+# Quit the running app first, and wait until it is gone. Found with `ps`: `pkill` sees
+# no process from some shells (Claude Code's sandbox), and `open` would then only bring
+# back the old app, still running the old code.
+OLD_PIDS="$(ps -axo pid=,comm= | awk '/\.app\/Contents\/MacOS\/CubeWidget$/ {print $1}')"
+if [ -n "$OLD_PIDS" ]; then
+    kill $OLD_PIDS 2>/dev/null || true
+    for _ in $(seq 30); do kill -0 $OLD_PIDS 2>/dev/null || break; sleep 0.1; done
+fi
 rm -rf "$APP" build/CubeWidget.app   # also the app's former name
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN_DIR/CubeWidget" "$APP/Contents/MacOS/"

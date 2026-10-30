@@ -9,11 +9,14 @@ struct HubView: View {
     @ObservedObject var widget: WidgetSettings
     let onNewProject: () -> Void
     let onBringIntoHub: (Session) -> Void
+    /// Opens a Terminal window in this folder, next to the Hub.
+    let onOpenTerminal: (URL) -> Void
     let onOpenSettings: () -> Void
 
     var body: some View {
         NavigationSplitView {
-            HubSidebar(hub: hub, themes: hub.themes, board: board, onNewProject: onNewProject, onBringIntoHub: onBringIntoHub)
+            HubSidebar(hub: hub, themes: hub.themes, board: board, onNewProject: onNewProject,
+                       onBringIntoHub: onBringIntoHub, onOpenTerminal: onOpenTerminal)
                 .navigationSplitViewColumnWidth(min: 220, ideal: Constants.Hub.sidebarWidth, max: 360)
                 .toolbar {
                     ToolbarItem {
@@ -53,7 +56,8 @@ struct HubView: View {
         switch hub.selection {
         case .project:
             if let project = hub.selected {
-                ProjectTerminal(project: project, session: board.session(onTTY: project.tty))
+                ProjectTerminal(project: project, session: board.session(onTTY: project.tty),
+                                onOpenTerminal: { onOpenTerminal(project.folder) })
             }
         case .session(let id):
             if let session = board.sessions.first(where: { $0.id == id }) {
@@ -79,6 +83,7 @@ struct HubSidebar: View {
     @ObservedObject var board: SessionBoard
     let onNewProject: () -> Void
     let onBringIntoHub: (Session) -> Void
+    let onOpenTerminal: (URL) -> Void
 
     /// The card being dragged, if any.
     @State private var drag: Drag?
@@ -266,6 +271,7 @@ struct HubSidebar: View {
                 .onTapGesture { hub.selectedID = project.id }
                 .contextMenu {
                     Button("Nouvelle session…", action: onNewProject)
+                    Button("Ouvrir un terminal ici") { onOpenTerminal(project.folder) }
                     Divider()
                     themeMenu(for: item.key)
                     TelegramMenuItem(folder: project.folder)
@@ -284,6 +290,9 @@ struct HubSidebar: View {
                         .disabled(!OutsideSessionView.canBring(session))
                     Button("Afficher dans Terminal") {
                         if let tty = session.tty { TerminalFocus.focus(tty: tty) }
+                    }
+                    if let folder = session.folder {
+                        Button("Ouvrir un terminal ici") { onOpenTerminal(folder) }
                     }
                     Divider()
                     themeMenu(for: item.key)
@@ -977,6 +986,8 @@ struct HubSessionHeader: View {
     let name: String
     let session: Session?
     let fallbackLabel: String
+    /// The ">_" icon at the right, when given.
+    var onOpenTerminal: (() -> Void)? = nil
 
     var body: some View {
         HStack(spacing: 14) {
@@ -996,6 +1007,9 @@ struct HubSessionHeader: View {
             .lineLimit(1)
             .truncationMode(.tail)
             Spacer(minLength: 0)
+            if let onOpenTerminal {
+                OpenTerminalButton(action: onOpenTerminal)
+            }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
@@ -1011,15 +1025,36 @@ struct HubSessionHeader: View {
     }
 }
 
+/// The ">_" icon of the band: opens a Terminal window in the project's folder, next to
+/// the Hub. Gray, lit on hover.
+private struct OpenTerminalButton: View {
+    let action: () -> Void
+    @State private var isHovered = false
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: "terminal")
+                .font(.system(size: Constants.Hub.openTerminalIconSize))
+                .foregroundStyle(isHovered ? Constants.Hub.openTerminalIconHoverColor : Constants.Hub.openTerminalIconColor)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .onHover { isHovered = $0 }
+        .help("Ouvrir un terminal dans ce dossier, à côté du Hub")
+    }
+}
+
 /// A project's terminal, under its header; a button to start it again once closed.
 private struct ProjectTerminal: View {
     @ObservedObject var project: HubProject
     let session: Session?
+    let onOpenTerminal: () -> Void
 
     var body: some View {
         VStack(spacing: 0) {
             HubSessionHeader(name: project.name, session: session,
-                             fallbackLabel: project.isRunning ? "terminal ouvert" : "terminal fermé")
+                             fallbackLabel: project.isRunning ? "terminal ouvert" : "terminal fermé",
+                             onOpenTerminal: onOpenTerminal)
             TerminalHost(project: project)
                 .overlay {
                     if !project.isRunning, project.tty == nil, project.hasBeenStarted {

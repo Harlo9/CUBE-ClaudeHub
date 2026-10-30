@@ -170,6 +170,7 @@ final class HubWindowController: NSObject, NSWindowDelegate {
             hub: hub, board: board, widget: widget,
             onNewProject: { [weak self] in self?.newProject() },
             onBringIntoHub: { [weak self] session in self?.bringIntoHub(session) },
+            onOpenTerminal: { [weak self] folder in TerminalOpen.open(folder, besides: self?.window) },
             onOpenSettings: { [weak self] in self?.openSettings() }))
         window.center()
         window.setFrameAutosaveName("ClaudeHub")   // remembers its size and position (old name kept, so the saved frame stays)
